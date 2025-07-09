@@ -17,6 +17,11 @@ class Node{
         this -> next = NULL;
     }
 
+    // Destructor
+    ~Node(){
+        cout<<"\n Destructor called for : "<<this -> data<<endl;
+    }
+
 };
 
 void print(Node* zero){
@@ -24,9 +29,10 @@ void print(Node* zero){
     Node* temp = zero;
 
     while(temp != NULL){
-        cout<<temp -> data<<endl;
+        cout<<temp -> data<<" -> ";
         temp = temp -> next;
-    }   
+    }
+    return;   
 }
 
 int lengthCount(Node* head){
@@ -46,12 +52,13 @@ void insertAtHead(Node* &head,Node* &tail ,int data){
 
     // Check empty linked List
 
-    if(head == NULL){
+    if(head == NULL && tail == NULL){
         // Create new Node
         Node* newNode = new Node(data);
         // Upate head
         head = newNode;
         tail = newNode;
+        return;
     }
 
     // create a new node
@@ -62,6 +69,7 @@ void insertAtHead(Node* &head,Node* &tail ,int data){
 
     // make new node head
     head = newNode;
+    return;
 }
 
 void insertAtTail(Node* & head, Node* &tail, int data){
@@ -72,6 +80,7 @@ void insertAtTail(Node* & head, Node* &tail, int data){
 
         tail = newNode;
         head = newNode;
+        return;
     }
 
     // Create new Node
@@ -79,6 +88,7 @@ void insertAtTail(Node* & head, Node* &tail, int data){
 
     tail -> next = newNode;
     tail = newNode;
+    return;
 }
 
 void createTail(Node* & head, Node* & tail, int data){
@@ -125,6 +135,83 @@ void insetAtPos(Node* &head, Node* &tail, int data, int pos){
     }
 }
 
+void deleteNodebyPos(Node* &head, Node*&tail, int pos){
+    
+    int length = lengthCount(head);
+    if(head == NULL){
+        cout<<"Cannot delete, LL is empty"<<endl;
+        return;
+    }
+
+    if(head == tail){
+        Node* temp = head;
+
+        delete(temp);
+
+        head = NULL;
+        tail = NULL;
+        return;
+    }
+    else if(pos == 1){
+        // delete from head
+
+        // create temp
+        Node* temp = head;
+
+        // change head
+        head = head -> next;
+
+        // Point to null
+        temp -> next = NULL;
+
+        // Free space
+        delete(temp);
+        return;
+
+    }else if(pos == length){
+        // delete last node
+
+        // Temp Node
+        Node* temp = head;
+        while(temp -> next != tail){
+            temp = temp -> next;
+        }
+
+        // Isolate tail
+        temp -> next = NULL;
+
+        // Delete tail
+        delete(tail);
+        
+        // Update tail
+        tail = temp;
+        return;
+    }else{
+        // delete from pos
+
+        // Create Nodes
+        Node* prev = NULL;
+        Node*curr = head;
+
+        while(pos != 1){
+            pos--;
+            prev = curr;
+            curr = curr -> next;
+        }
+
+        // Jump over node
+        prev -> next = curr -> next;
+
+        // Isolate it :  Make it null
+        curr -> next = NULL;
+
+        // Delete
+        delete(curr);
+
+    }
+    return;
+}
+
 
 int main(){
     // Creation of Node
@@ -157,13 +244,26 @@ int main(){
     Node* head = NULL;
     Node* tail = NULL;
 
-    insertAtHead(head, tail, 10);
-    insertAtHead(head, tail, 30);
-    insertAtHead(head, tail, 50);
+    // insertAtHead(head, tail, 10);
+    // insertAtHead(head, tail, 30);
+    // insertAtHead(head, tail, 50);
+    // print(head);
+    // cout<<"Insert AT tail"<<endl;
+    // insertAtTail(head, tail, 100);
+    // insertAtTail(head, tail, 200);
+    // insertAtTail(head, tail, 300);
     print(head);
-    cout<<"Insert AT tail"<<endl;
-    insertAtTail(head, tail, 100);
-    insertAtTail(head, tail, 200);
-    insertAtTail(head, tail, 300);
+    int len = lengthCount(head);
+    cout<<"Length is : "<<len<<endl;
+    deleteNodebyPos(head, tail, 1);
     print(head);
+    cout<<"After deletion"<<endl;
+    int len2 = lengthCount(head);
+    cout<<"Length is : "<<len2<<endl;
+    // deleteNodebyPos(head, tail, 6);
+    // print(head);
+
+    // deleteNodebyPos(head, tail, 1);
+    // print(head);
+
 }
