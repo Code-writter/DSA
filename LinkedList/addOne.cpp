@@ -130,58 +130,83 @@ void insetAtPos(Node* &head, Node* &tail, int data, int pos){
     }    
 }
 
+Node* reverseLL(Node* &head){
+    Node* prevNode = NULL;
+    Node* currNode = head;
+    Node* temp = currNode;
+    while(currNode != NULL){
+        temp = temp -> next;
+        currNode -> next = prevNode;
+        prevNode = currNode;
+        currNode = temp;
+    }
+
+    return prevNode;
+}
+
+Node* add(Node* head){
+    int carry = 1;
+
+    Node* temp = head;
+    // we will stop before the last NULL (ie we will stop at tail)
+    while(temp -> next != NULL){
+        int totalSum = temp -> data + carry;
+        int digit = totalSum % 10;
+        carry = totalSum / 10;
+
+        // add the last digit to the temp
+        temp -> data = digit;
+        // Move the temp
+        temp = temp -> next;
+
+        if(carry == 0){
+            break;
+        }
+    }
+
+    if(carry != 0){
+        int totalSum = temp -> data + carry;
+        int digit = totalSum % 10;
+        carry = totalSum / 10;
+
+        temp -> data = digit;
+
+        if(carry != 0){
+            // create new node for the tail
+            Node* newNode = new Node(carry);
+            temp -> next = newNode;
+            cout<<"\n  printing inside the if"<<endl;
+            print(head);
+        }
+
+    }
+    return head;
+}
+
+Node* addOne(Node* &head){
+    // Reverse a LL
+    Node* head1 = reverseLL(head);
+    // Add One in the nodes
+    Node* head2 = add(head1);
+    Node* head3 = reverseLL(head2);
+}
+
 
 int main(){
-    // Creation of Node
-    // Static Creation
-    // Node a;
-
-    // Dynamic Creation
-    // Node* zero = new Node(23);
-    // Node* first = new Node(33);
-    // Node* second = new Node(43);
-    // Node* third = new Node(53);
-    // // NOTE: Above nodes are not connected
-     
-
-    // zero->next = first; // temp -> first
-    // first->next = second; // first -> second
-    // second->next = third; // second -> third
-    // // Now they are connected
-    // print(zero);
-
-    // int ans = lengthCount(zero);
-    // cout << "Length is : "<<ans<<endl;
-
-    // // insertAtHead(zero, third, 299);
-    // insertAtTail(zero, third, 999);
-
-    // print(zero);
 
 
     Node* head = NULL;
     Node* tail = NULL;
 
-    // insertAtHead(head, tail, 10);
-    // insertAtHead(head, tail, 30);
-    // insertAtHead(head, tail, 50);
-    // print(head);
-    // cout<<"Insert AT tail"<<endl;
-    // insertAtTail(head, tail, 100);
-    // insertAtTail(head, tail, 200);
-    // insertAtTail(head, tail, 300);
-    // print(head);
 
-    insetAtPos(head, tail, 10, 1);
-    insetAtPos(head, tail, 20, 2);
-    insetAtPos(head, tail, 30, 3);
-    insetAtPos(head, tail, 40, 4);
-    insetAtPos(head, tail, 50, 5);
+    insetAtPos(head, tail, 9, 1);
+    insetAtPos(head, tail, 9, 2);
+    insetAtPos(head, tail, 9, 3);
 
-    cout<<"Value of head : "<<head->data<<endl;
-    cout<<"Value of tail : "<<tail->data<<endl;
     print(head);
-
-    
+    cout<< "\n Before Addition "<<endl;
+    Node* afterAdd = addOne(head);
+    cout<<"\n After Addition"<<endl;
+    print(afterAdd);
 
 }

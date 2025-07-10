@@ -130,6 +130,31 @@ void insetAtPos(Node* &head, Node* &tail, int data, int pos){
     }    
 }
 
+void reverseLL(Node* &head, Node* &tail){
+    if(head == NULL && tail == NULL){
+        cout<<"LL cannot be reversed "<<endl;
+        return;
+    }
+    else if(head == tail){
+        return;
+    }
+    else {
+        Node* temp = head;
+        Node* prevNode = NULL;
+        Node* currNode = head;
+        tail = head;
+        while(currNode != NULL){
+            temp = temp -> next;
+            currNode -> next = prevNode;
+            prevNode = currNode;
+            currNode = temp;
+        }
+
+        head = prevNode;
+        return;
+    }
+}
+
 
 int main(){
     // Creation of Node
@@ -182,6 +207,11 @@ int main(){
     cout<<"Value of tail : "<<tail->data<<endl;
     print(head);
 
-    
+    reverseLL(head, tail);
+    cout<<"\n Printing Reverse "<<endl;
+    print(head);
+    cout<<"\n After reversal head : "<<head ->data<<endl;
+    cout<<"\n After reversal tail : "<<tail ->data<<endl;
+
 
 }
