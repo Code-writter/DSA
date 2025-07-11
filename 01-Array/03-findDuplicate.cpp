@@ -9,7 +9,7 @@ int markVisited(vector<int> arr){
         }
         else{
             // got to the place and mark the visited
-            arr[arr[i]] = -1;
+            arr[abs(arr[i])] = -1;
         }
     }
     return -1;
