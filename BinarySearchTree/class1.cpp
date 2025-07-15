@@ -174,12 +174,30 @@ Node* deleteFromBST(Node* root, int target){
 }
 
 
+Node* inOrderToBST(vector<int> arr, int start, int end){
+    // Base case
+    if(start > end){
+        return NULL;
+    }
+
+    int mid = (start + end)/2;
+    int midEle = arr[mid];
+    cout<<"funciton called"<<endl;
+    // Create the root node
+    Node* root = new Node(midEle);
+
+    root -> left = inOrderToBST(arr, start, mid - 1);
+    root -> right = inOrderToBST(arr, mid + 1, end);
+
+    return root;
+}
+
 
 int main(){
-    Node* root = NULL;
-    createBST(root);
-    cout<<"\n After creation Level Order traversal "<<endl;
-    inOrderTraversal(root);
+    // Node* root = NULL;
+    // createBST(root);
+    // cout<<"\n After creation Level Order traversal "<<endl;
+    // inOrderTraversal(root);
     // levelOrderTraversal(root);
     // inOrderTraversal(root);
 
@@ -194,19 +212,25 @@ int main(){
     // }else{
     //     cout<<"\n Not present"<<endl;
     // }
-    cout<<"\n Starting deletion"<<endl;
-    int target;
-    cout<<"Enter value to delete : ";
-    cin>>target;
+    // cout<<"\n Starting deletion"<<endl;
+    // int target;
+    // cout<<"Enter value to delete : ";
+    // cin>>target;
 
-    while(target != -1){
-        Node* newRoot =  deleteFromBST(root, target);
+    // while(target != -1){
+    //     Node* newRoot =  deleteFromBST(root, target);
 
-        cout<<endl<<"After deletion level Order tarvesal"<<endl;
-        levelOrderTraversal(newRoot);
-        cout<<"\n Enter value to delete : ";
-        cin>>target;
+    //     cout<<endl<<"After deletion level Order tarvesal"<<endl;
+    //     levelOrderTraversal(newRoot);
+    //     cout<<"\n Enter value to delete : ";
+    //     cin>>target;
 
-    }
-
-};
+    // }
+    vector<int> arr = {10, 20, 30, 40, 50, 60, 70, 80, 90};
+    int start = 0;
+    int end = arr.size() - 1;
+    Node* root = inOrderToBST(arr, start, end);
+    cout<<"BST created"<<endl;
+    cout<<"Root data : "<<root -> data<<endl;
+    levelOrderTraversal(root);
+}; 
