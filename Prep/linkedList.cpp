@@ -1,4 +1,5 @@
 #include<iostream>
+#include<unordered_map>
 using namespace std;
 
 class Node{
@@ -219,25 +220,254 @@ Node* reverseKNodes(Node* head, int k){
     return prev;
 }
 
+Node* middleOfLL(Node* head){
+    int len = lengthCount(head);
+
+    int mid = len/2;
+    Node* temp = head;
+    while(mid != 0){
+        mid--;
+        temp = temp -> next;
+    }
+
+    return temp;
+}
+
+Node* middleOfLLMethodTwo(Node* head){
+    Node* turtle = head;
+    Node* hare = head;
+    if(head == NULL){
+        return NULL;
+    }
+
+    while(hare != NULL){
+        // move hare one step
+        hare = hare -> next;
+        if(hare != NULL){
+            // more hare one more step
+            hare = hare -> next;
+            turtle = turtle -> next;
+        }
+    }
+
+    return turtle;
+}
+
+Node* createNewLLUsingRec(int data ) {
+    if (data == NULL) {
+        return NULL;
+    }
+    Node* head = new Node(data);
+    head->next = createNewLLUsingRec(data);
+    return head;
+}
+
+bool palindromeMethod1(Node* head){
+    Node* head1 = head;
+    Node* head2 = NULL;
+
+    // Make new linked list
+    Node* temp = head1;
+    Node* head2KaNext = head2;
+    // Create a reversed copy of the linked list
+    while(temp != NULL){
+        Node* newNode = new Node(temp->data);
+        newNode->next = head2;
+        head2 = newNode;
+        temp = temp->next;
+    }
+
+    // Compare both linked lists
+    Node* temp1 = head1;
+    Node* temp2 = head2;
+    while(temp1 != NULL && temp2 != NULL){
+        if(temp1->data != temp2->data){
+            cout<<"Not a palindrome"<<endl;
+            return false;
+        }else{
+            temp1 = temp1->next;
+            temp2 = temp2->next;
+        }
+    }
+    return true;
+}
+
+Node* getMid(Node* head){
+    Node* turtle = head;
+    Node* hare = head;
+
+    while(hare != NULL){
+        hare = hare -> next;
+        if(hare != NULL){
+            hare = hare -> next;
+            turtle = turtle -> next;
+        }
+    }
+    return turtle;
+}
+Node* reverseHalf(Node* mid){
+    Node* curr = mid;
+    Node* temp = curr;
+    Node* prev = NULL;
+
+    while(curr != NULL){
+        temp = temp -> next;
+        curr -> next = prev;
+        prev = curr;
+        curr = temp;
+    }
+    // prev is the new head
+    return prev;
+}
+
+bool compreLL(Node* head1,Node* head2){
+    Node* temp1 = head1;
+    Node* temp2 = head2;
+
+    while(temp1 != NULL && temp2 != NULL){
+        if(temp1 -> data != temp2 -> data){
+            return false;
+        }else{
+            temp1 = temp1 -> next;
+            temp2 = temp2 -> next;
+        }
+    }
+    return true;
+}
+
+bool palindromeMethod2(Node* head){
+    // get middle
+    Node* mid = getMid(head);
+
+    Node* nextToMid = mid -> next;
+    mid -> next = NULL;
+
+    // reverse the half part
+    Node* head2 = reverseHalf(nextToMid);
+    // compare till one exhausts
+    return compreLL(head, head2);
+}
+
+
+bool detectCycleMethodOne(Node* head){
+    unordered_map<Node*, bool>mp;
+    Node* temp = head;
+
+    while(temp != NULL){
+        if(mp.count(temp)){
+            return true;
+        }
+        else{
+            mp[temp] = true;
+        }
+        temp = temp -> next;
+    }
+
+    return false;
+}
+
+bool detectCycleMethodTwo(Node* head){
+    Node* turtle = head;
+    Node* hare = head;
+
+    while(hare != NULL){
+        hare = hare -> next;
+        if(hare != NULL){
+            hare = hare -> next;
+            turtle = turtle -> next;
+        }
+
+        if(hare == turtle){
+            return true;
+        }
+    }
+    return false;
+}
+
+Node* detectAndRemoveCycle(Node* head){
+    Node* turtle = head;
+    Node* hare = head;
+    bool cycleFound = false;
+
+    // Detect cycle
+    while(hare != NULL && hare->next != NULL){
+        hare = hare->next->next;
+        turtle = turtle->next;
+        if(hare == turtle){
+            cycleFound = true;
+            break;
+        }
+    }
+
+    if(!cycleFound) {
+        return head; // No cycle
+    }
+
+    // Find start of cycle
+    turtle = head;
+    while(turtle != hare){
+        turtle = turtle->next;
+        hare = hare->next;
+    }
+
+    // Find the node before the start of cycle
+    Node* prev = hare;
+    while(prev->next != hare){
+        prev = prev->next;
+    }
+    prev->next = NULL;
+
+    return head;
+}
 
 int main(){
     Node* head = NULL;
     Node* tail = NULL;
-    insetAtPos(head, tail, 3, 1);
-    insetAtPos(head, tail, 2, 2);
-    insetAtPos(head, tail, 5, 3);
+    insetAtPos(head, tail, 2, 1);
+    insetAtPos(head, tail, 1, 2);
+    insetAtPos(head, tail, 2, 3);
     insetAtPos(head, tail, 6, 4);
-    insetAtPos(head, tail, 8, 5);
-    insetAtPos(head, tail, 9, 6);
-    insetAtPos(head, tail, 11, 7);
+    insetAtPos(head, tail, 2, 5);
+    insetAtPos(head, tail, 1, 6);
+    insetAtPos(head, tail, 1, 7);
+
+    // Make a cycle: tail->next points to the 3rd node
+    Node* third = head;
+    int pos = 3;
+    while(pos > 1 && third != NULL) {
+        third = third->next;
+        pos--;
+    }
+    if (tail != NULL && third != NULL) {
+        tail->next = third;
+    }
 
     // cout<<"Before deleting"<<endl;
-    print(head);
+    // print(head);
     // cout<<"After deleting"<<endl;
     // Node* newHead = deleteFromPos(head, 1);
     // print(newHead);
-    cout<<"reversed List"<<endl;
-    Node* newHead = reverseKNodes(head, 3);
-    print(newHead);
+    // cout<<"reversed List"<<endl;
+    // Node* newHead = middleOfLLMethodTwo(head);
+    // cout<<newHead -> data <<endl;
+    // if(palindromeMethod1(head)){
+    //     cout<<"It is a palindrome"<<endl;
+    // }else{
+    //     cout<<"It is not a palindrome"<<endl;
+    // }
+    // // Node* createNewLL = createNewLLUsingRec();
+    // // print (createNewLL);
+    // cout<<endl;
+    // getMid(head);    
+    
+    // if(detectCycleMethodTwo(head)){
+    //     cout<<" Cycle Present "<<endl;
+    // }else{
+    //     cout<<"Not Cycle "<<endl;
+    // }
+    // cout<<endl;
 
+    Node* newHead = detectAndRemoveCycle(head);
+    cout<<"After removed Cycle"<<endl;
+    print(head);
 }
