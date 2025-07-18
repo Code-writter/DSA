@@ -191,6 +191,24 @@ Node* inOrderToBST(vector<int> arr, int start, int end){
     return root;
 }
 
+Node* inOrderToBST(vector<int> arr, int start, int end){
+    // Base case
+    if(start > end){
+        return NULL;
+    }
+
+    int mid = (start + end)/2;
+    int midEle = arr[mid];
+    cout<<"funciton called"<<endl;
+    // Create the root node
+    Node* root = new Node(midEle);
+
+    root -> left = inOrderToBST(arr, start, mid - 1);
+    root -> right = inOrderToBST(arr, mid + 1, end);
+
+    return root;
+}
+
 
 int main(){
     // Node* root = NULL;
@@ -232,4 +250,8 @@ int main(){
     cout<<"BST created"<<endl;
     cout<<"Root data : "<<root -> data<<endl;
     levelOrderTraversal(root);
+<<<<<<< HEAD
 };
+=======
+}; 
+>>>>>>> c1c4091f6ceb78b8ed028e9be7af567ca2fa97b1
