@@ -250,8 +250,4 @@ int main(){
     cout<<"BST created"<<endl;
     cout<<"Root data : "<<root -> data<<endl;
     levelOrderTraversal(root);
-<<<<<<< HEAD
 };
-=======
-}; 
->>>>>>> c1c4091f6ceb78b8ed028e9be7af567ca2fa97b1
