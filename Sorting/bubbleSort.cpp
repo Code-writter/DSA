@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<limits.h>
+#include<algorithm>
 using namespace std;
   
 
@@ -28,13 +29,38 @@ void selectionSort(vector<int> &arr){
 }
 
 
+void insertionSort(vector<int> &arr){
+    // Skip the 0th index 
+    for(int i = 1; i<arr.size(); i++){
+        int key = arr[i];
+        int j = i - 1;
+
+        while(j >= 0 && arr[j] > key){
+            // Swapping till the elements are greater than the key
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        // Insertion
+        arr[j + 1] = key;
+    }
+}
+
+
+
+
+bool comparator(int &a, int &b){
+    return a < b; // This will sort the increasing Order
+    return a > b; // This will sort the Decreasing Order
+}
+
 int main(){
     vector<int> arr = {5, 4, 3, 2, 1};
-    selectionSort(arr);
+
+    sort(arr.begin(), arr.end(), comparator);
 
     for(auto a : arr){
         cout<<a<<"  ";
     }
 
     return 0;
-};
+}
